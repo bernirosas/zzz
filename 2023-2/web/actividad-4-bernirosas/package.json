@@ -1,0 +1,24 @@
+{
+  "name": "a4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "displayName": "Actividad 4",
+    "globals": {
+      "PROJECT_NAME": "Actividad 4"
+    },
+    "bail": 20,
+    "verbose": true
+  }
+}

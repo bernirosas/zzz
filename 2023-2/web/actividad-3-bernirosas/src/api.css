@@ -1,0 +1,125 @@
+header{
+    background-color: #572364;
+    color: #fff;
+    text-align: left;
+    font-size: 1.5vw;
+    font-weight: bold;
+    width: 95%;
+    margin: 0 auto;
+}
+.body{
+    text-align: left;
+    font-size: 1.5vw;
+    font-weight: bold;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.respuesta{
+    text-align: left;
+    font-size: 1.5vw;
+    width: 95%;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 0.5vw;
+    border-radius: 1vw;
+}
+header p{
+    padding: 1vw;
+}
+
+
+footer{
+    background-color: #572364;
+    color: #fff;
+    text-align: left;
+    font-size: 1.5vw;
+    font-weight: bold;
+    bottom: 0;
+    width: 95%;
+    margin: 0 auto;
+}
+
+
+footer p{
+    padding: 1vw;
+}
+
+html {
+    min-height: 100%;
+    max-width: 100%;
+    background-image: url("../../weather.jpeg");
+}
+
+.titulo{
+    text-align: center;
+    font-size: 2vw;
+    font-weight: bold;
+    width: 95%;
+    margin: 0 auto;
+
+}
+
+.flex-box{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: first baseline;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.flex-box h2{
+    text-align: center;
+    font-size: 3vw;
+    font-weight: bold;
+    margin: 0 auto;
+}
+
+.flex-box p{
+    font-size: 2vw;
+    margin: 0 auto;
+    padding: 1vw;
+    text-align: left;
+}
+
+.flex-column{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    margin: 0 auto;
+    min-height: 15vw;
+   background-color: rgba(255, 255, 255, 0.7);
+   padding: 2vw;
+   border-radius: 1vw;
+}
+
+.parametro{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+input{
+    height: 2vw;
+}
+
+.boton{
+    background-color: #572364;
+    color: #fff;
+    border: none;
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    font-size: 1.5vw;
+    font-weight: bold;
+    margin: 0.5vw;
+    margin-left: 15vw;
+}
+.boton:hover{
+    background-color: #fff;
+    color: #572364;
+    border: 1px solid #572364;
+}

@@ -1,0 +1,28 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script> var socket = io("https://el-giro-de-la-varita.onrender.com");
+    console.log(socket)
+    socket.on('connect', () => {
+    console.log('Connected to server');
+    });
+    socket.on('disconnect', () => {
+    console.log('Disconnected from server');
+    });
+
+    </script>
+    <title>El giro de la varita</title>
+  <script type="module" crossorigin src="/assets/index-6dc5b49f.js"></script>
+  <link rel="stylesheet" href="/assets/index-3a3c4afc.css">
+</head>
+
+<body>
+    <div id="root">
+        
+    </div>
+</body>
+
+</html>

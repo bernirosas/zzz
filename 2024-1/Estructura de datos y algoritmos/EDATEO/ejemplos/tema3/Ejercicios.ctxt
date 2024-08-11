@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=Ejercicios
+comment0.text=\n\ Write\ a\ description\ of\ class\ Ejercicios\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=v
+comment1.target=java.lang.Object\ modaDe(java.lang.Object[])
+comment2.params=m1\ m2
+comment2.target=librerias.estructurasDeDatos.modelos.Map\ diferencia(librerias.estructurasDeDatos.modelos.Map,\ librerias.estructurasDeDatos.modelos.Map)
+comment3.params=m
+comment3.target=librerias.estructurasDeDatos.modelos.Map\ obtenerAprobados(librerias.estructurasDeDatos.modelos.Map)
+comment4.params=v\ e
+comment4.target=java.lang.String\ metodoArrays(java.lang.Integer[],\ java.lang.Integer)
+numComments=5

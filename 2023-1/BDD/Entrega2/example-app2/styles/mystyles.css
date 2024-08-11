@@ -1,0 +1,106 @@
+/* mystyles.css */
+
+/* Estilos para los elementos de entrada de texto */
+.text-input {
+    width: 10%;
+    height: 20px;
+    font-size: 20px;
+  }
+  
+  /* Estilos para los botones */
+  .button {
+    background-color: rgb(212, 138, 241);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: rgb(188, 94, 255);
+  }
+  
+  /* Estilos para los dropdowns */
+  .dropdown {
+    color: rgb(64, 6, 100);
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    padding: 5px;
+    background-color: #e69bff;
+    color: white;
+  }
+  
+  /* Estilos para los encabezados */
+  h1 {
+    color: rgb(188, 94, 255);
+    text-align: center;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-align: center;
+  }
+  
+  /* Estilos para el cuerpo */
+  body {
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    background-color: rgb(212, 138, 241);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* Estilos para la tabla */
+  .table {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid black;
+    width: 90%;
+    text-align: center;
+    font-size: 20px;
+  }
+  
+  .table th {
+    background-color: #e69bff;
+    color: white;
+  }
+  
+  .table tr:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .table tr:nth-child(even) {
+    background-color: #f5f5f5;
+  }
+  
+  .container {
+    background-color: rgba(255, 255, 255, 0.7); 
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+  
+
+header h1 {
+  color: black;
+  /* Otros estilos que desees aplicar al texto del encabezado */
+}
+header {
+  background-color: rgba(255, 255, 255, 0.7);
+  top: 0;
+  width: 100%;
+  position: fixed;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
