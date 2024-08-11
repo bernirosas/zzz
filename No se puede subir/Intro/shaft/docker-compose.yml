@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  db:
+    build:
+      context: ./docker/db
+      dockerfile: Dockerfile
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=shaft
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=${DB_PORT-5432}
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d shaft"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    environment:
+      - WIN32=${WIN32-0}
+      - DATABASE_URL=postgresql://postgres:postgres@db:${DB_PORT-5432}/shaft?schema=public&connect_timeout=300
+      - TEST_DATABASE_URL=postgresql://postgres:postgres@db:${DB_PORT-5432}/test?schema=public&connect_timeout=300
+      - AUTH0_AUDIENCE=http://shaft-api
+      - AUTH0_DOMAIN=dev-dwgohas6.us.auth0.com
+    env_file:
+      - ./.env
+    volumes:
+      - .:/usr/local/app
+      - node_modules:/usr/local/app/node_modules
+    ports:
+      - "4000:4000"
+      - "5555:5555"
+    depends_on:
+      db:
+        condition: service_healthy
+    user: root
+    command: /bin/sh -c "./command.sh"
+  api-test:
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile.test
+    profiles: ["test"]
+    environment:
+      - WIN32=${WIN32-0}
+      - DATABASE_URL=postgresql://postgres:postgres@db:${DB_PORT-5432}/shaft_test?schema=public&connect_timeout=300
+      - AUTH0_AUDIENCE=http://shaft-api
+      - AUTH0_DOMAIN=dev-dwgohas6.us.auth0.com
+      - PORT=4002
+      - TEST_DB_STRING_CHECK=This database is for testing
+    env_file:
+      - ./.env
+    volumes:
+      - .:/usr/local/app_test
+      - node_modules:/usr/local/app_test/node_modules
+    ports:
+      - "4002:4002"
+      - "5556:5556"
+    depends_on:
+      db:
+        condition: service_healthy
+    user: root
+    command: /bin/sh -c "./command.sh"
+
+volumes:
+  pgdata:
+  node_modules:

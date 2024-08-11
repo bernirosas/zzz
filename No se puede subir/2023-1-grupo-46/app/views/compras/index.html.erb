@@ -1,0 +1,106 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'compra' %>
+</head>
+
+<body>
+
+<% if current_user.tipo_de_usuario == "C" %>
+  <div class="page-container">
+  <div class ="content-wrap">
+
+  <%= render 'componentes/header' %>
+
+    <div class="contenedor">
+
+      <h1>Compras de <%= @user.nombre %></h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Libro</th>
+            <th>Estado</th>
+            <!--
+            <th>Acciones</th>
+            -->
+          </tr>
+        </thead>
+        <tbody>
+          <% @compras.each do |compra| %>
+            <tr>
+              <td><%= compra.libro.titulo %></td>
+              <td>
+                <% if compra.estado == "E" %>
+                  <p>En Revisión</p>
+                <% elsif compra.estado == "A" %>
+                  <p>Aprobado</p>
+                <% elsif compra.estado == "R" %>
+                  <p>Rechazado</p>
+              <% end %>
+              </td>
+              <!--
+              <td><%= link_to "Mostrar", user_compra_path(@user, compra) %></td>
+              -->
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <button class="boton-compra">
+      <%= link_to "Volver al perfil", profile_path, class: "link" %>
+      </button>
+
+      <button class="boton-compra">
+      <%= link_to "Volver a libros", :libros, class: "link" %>
+      </button>
+
+    </div>
+
+  </div>
+  <%= render 'componentes/footer' %>
+  </div>
+<% end %>
+
+
+<% if current_user.tipo_de_usuario == "A" %>
+  <div class="page-container">
+  <div class ="content-wrap">
+  <%= render 'componentes/header' %>
+
+      <div class="contenedor-admin">
+
+      <h1>Compras</h1>
+      <table class="table">
+        <thead>
+          <tr>
+              <th>Usuario</th>
+              <th>Libro</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @compras_totales.each do |compra| %>
+            <tr>
+              <td><%= compra.user.nombre %></td>
+              <td><%= compra.libro.titulo %></td>
+              <td>
+                <% if compra.estado == "E" %>
+                  <p>En Revisión</p>
+                <% elsif compra.estado == "A" %>
+                  <p>Aprobado</p>
+                <% elsif compra.estado == "R" %>
+                  <p>Rechazado</p>
+              <% end %>
+              </td>
+              <td><%= link_to "Mostrar", user_compra_path(compra.user, compra), class: "link-compra" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    
+  <%= render 'componentes/footer' %>
+<% end %>
+
+</body>
+
+</html>

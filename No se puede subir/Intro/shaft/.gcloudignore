@@ -1,0 +1,18 @@
+# Node
+node_modules/
+
+# Tests
+Makefile
+runTest.sh
+
+# Git
+.gitignore
+README.md
+.github/
+.git/
+
+# Docker
+docker-compose**
+docker/
+Dockerfile
+.dockerignore

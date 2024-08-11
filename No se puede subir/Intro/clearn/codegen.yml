@@ -1,0 +1,19 @@
+overwrite: true
+# In order to replace this environment variables, package dotenv is required.
+schema: ${NEXT_PUBLIC_GRAPHQL_ENDPOINT}
+documents: "./graphql/**/*.graphql"
+generates:
+  ./graphql/generated/graphql.ts:
+    plugins:
+      - add:
+          content: "/* eslint-disable */"
+      - typescript
+      - typescript-operations
+      - typescript-react-query
+    config:
+      fetcher: graphql-request
+      exposeQueryKeys: true
+      addInfiniteQuery: true
+  ./graphql/graphql.schema.json:
+    plugins:
+      - introspection

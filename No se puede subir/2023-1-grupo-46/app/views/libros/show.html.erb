@@ -1,0 +1,113 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'libros' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+<%= render 'componentes/header' %>
+
+    <div class="container-libro">
+
+        <button class="boton boton-volver">
+            <%= link_to "Volver", :libros, class: "texto"  %>
+        </button>
+
+        <%= image_tag @libro.picture.url, class: "foto-libro" %>
+
+        <div class="descripcion">
+            <h1><%= @libro.titulo %></h1>
+            <p><span>Fecha publicación: </span><%= @libro.fecha %></p>
+            <p><span>Categoría: </span><%= @libro.categoria %></p>
+            <p><span>Precio: $</span><%= @libro.precio %></p>
+            <p><span>Autor: </span><%= @libro.autor %></p>
+            <p><span>Stock: </span><%= @libro.stock %></p>
+            <p><span>Descripción: </span><%= @libro.descripcion %></p>
+
+            <div class="grid-botones">
+                <button class="boton">
+                    <%= link_to "Reseñas", "/libros/#{@libro.id}/resenas/", class: "texto" %>
+                </button>
+
+                <button class="boton">
+                    <%= link_to "Chat", "/libros/#{@libro.id}/mensajes/", class: "texto" %>
+                </button>
+
+                <% if user_signed_in? %>
+                    <button class="boton comprar">
+                        <%= link_to "Comprar", "/libros/#{@libro.id}/compras/new", class: "texto" %>
+                    </button>
+                <% end %>
+                <% if user_signed_in? %>
+                    <% if current_user.tipo_de_usuario == "A" %>
+                        <button class="boton">
+                        <%= link_to "Editar", :edit_libro, class: "texto" %>
+                        </button>
+                        <button class="boton">
+                        <%= link_to "Borrar", :libro,
+                        data: {
+                        turbo_method: :delete,
+                        turbo_confirm: "Are you sure?"
+                        }, class: "texto"  %>
+                        </button>
+                    <% end %>
+                    <% end %>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="contenedor-carousel">
+
+    <h1>Recomendaciones</h1>
+    <div class="recomendador-carousel">
+    <form action="/libros" method="get">
+    <input type="radio" name="position" value="<%= @libros_filtrados[0].id %>" checked/>
+    <input type="radio" name="position" value="<%= @libros_filtrados[1].id %>"/>
+    <input type="radio" name="position" value="<%= @libros_filtrados[2].id %>"/>
+    <input type="radio" name="position" value="<%= @libros_filtrados[3].id %>"/>
+    <input type="radio" name="position" value="<%= @libros_filtrados[4].id %>"/>
+    <input type="submit" value="Buscar" class="boton">
+    <main id="carousel">
+        <div class="item ficha-carousel">
+            <%= image_tag @libros_filtrados[0].picture.url, class: "foto-mini-carousel"%>
+            <a href="<%= libro_path(@libros_filtrados[0]) %>" class="librotitulo"><%= @libros_filtrados[0].titulo %></a><br>
+            <%= link_to "Valor: $#{@libros_filtrados[0].precio}", @libros_filtrados[0], class: "precio" %>
+        </div>
+        <div class="item ficha-carousel">
+            <%= image_tag @libros_filtrados[1].picture.url, class: "foto-mini-carousel"%>
+            <a href="<%= libro_path(@libros_filtrados[1]) %>" class="librotitulo"><%= @libros_filtrados[1].titulo %></a><br>
+            <%= link_to "Valor: $#{@libros_filtrados[1].precio}", @libros_filtrados[1], class: "precio" %>
+        </div>
+        <div class="item ficha-carousel">
+            <%= image_tag @libros_filtrados[2].picture.url, class: "foto-mini-carousel"%>
+            <a href="<%= libro_path(@libros_filtrados[2]) %>" class="librotitulo"><%= @libros_filtrados[2].titulo %></a><br>
+            <%= link_to "Valor: $#{@libros_filtrados[2].precio}", @libros_filtrados[2], class: "precio" %>
+        </div>
+        <div class="item ficha-carousel">
+            <%= image_tag @libros_filtrados[3].picture.url, class: "foto-mini-carousel"%>
+            <a href="<%= libro_path(@libros_filtrados[3]) %>" class="librotitulo"><%= @libros_filtrados[3].titulo %></a><br>
+            <%= link_to "Valor: $#{@libros_filtrados[3].precio}", @libros_filtrados[3], class: "precio" %>
+        </div>
+        <div class="item ficha-carousel">
+            <%= image_tag @libros_filtrados[4].picture.url, class: "foto-mini-carousel"%>
+            <a href="<%= libro_path(@libros_filtrados[4]) %>" class="librotitulo"><%= @libros_filtrados[4].titulo %></a><br>
+            <%= link_to "Valor: $#{@libros_filtrados[4].precio}", @libros_filtrados[4], class: "precio" %>
+        </div>
+    </form>
+
+    </main>
+    </div>
+
+    </div>
+
+</div>
+<%= render 'componentes/footer' %>
+</div>
+
+</body>
+
+</html>

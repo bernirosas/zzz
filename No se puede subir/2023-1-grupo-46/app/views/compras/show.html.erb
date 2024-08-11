@@ -1,0 +1,47 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'compra' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+
+<%= render 'componentes/header' %>
+
+  <div class="contenedor">
+
+        <h1>Compra #<%= @compra.id %></h1>
+
+        <p><strong>Estado:</strong> <%= @compra.estado %></p>
+        <p><strong>Libro:</strong> <%= @compra.libro.titulo %></p>
+        <p><strong>Usuario:</strong> <%= @compra.user.nombre %></p>
+        <p><strong>Fecha de compra:</strong> <%= @compra.created_at.strftime("%d/%m/%Y") %></p>
+
+        <% if @user.tipo_de_usuario == "A" %>
+          <button class="boton-compra">
+          <%= link_to "Editar", edit_user_compra_path(@user, @compra), class: "link" %>
+          </button>
+          <button class="boton-compra">
+          <%= link_to "Borrar", :user_compra,
+                  data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                  }, class: "link" %>
+          </button>
+        <% end %>
+
+        <br/>
+        
+        <button class="boton-compra">
+        <%= link_to "Volver", :back, class: "link" %>
+        </button>
+
+  </div>
+
+</div>
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>

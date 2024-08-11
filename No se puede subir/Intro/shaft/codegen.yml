@@ -1,0 +1,18 @@
+schema:
+  - "scalar DateTime"
+  - "scalar JSON"
+  - "./src/modules/**/*.graphql"
+generates:
+  ./src/modules/:
+    preset: graphql-modules
+    presetConfig:
+      baseTypesPath: types.ts
+      filename: generated.ts # Where to create each module types
+      useGraphQLModules: false
+    plugins:
+      - add:
+          content: "/* eslint-disable */"
+      - typescript
+      - typescript-resolvers
+    config:
+      maybeValue: T | undefined

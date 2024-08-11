@@ -1,0 +1,96 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'libros' %>
+</head>
+<% if user_signed_in? %>
+<body>
+<% end %>
+
+<div class="page-container">
+    <div class="content-wrap">
+        <%= render 'componentes/header' %>
+
+        <div class="contenedor">
+            <h1 class="titulo">Best sellers</h1>
+            <div class="grid-container">
+                <div class="grid">
+                    <% @best_sellers.each do |libro| %>
+                        <div class="ficha">
+                            <a href="<%= libro_path(libro) %>">
+                                <%= image_tag libro.picture.url, class: "foto-mini"%>
+                            </a>
+                            <a href="<%= libro_path(libro) %>" class="librotitulo"><%= libro.titulo %></a><br>
+                            <%= link_to "Valor: $#{libro.precio}", libro, class: "precio" %>
+                            <div class="hide">COMPRAMEEEE!!!!</div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+
+        <div class="contenedor">
+            <h1 class="titulo">Libros</h1>
+
+            <% if user_signed_in? %>
+                <% if @user.tipo_de_usuario == "A" %>
+                    <button class="boton-libro">
+                        <%= link_to "Nuevo libro", :new_libro, class: "link" %>
+                    </button>
+                <% end %>
+            <% end %>
+            <div class="filtrar">
+                <%= image_tag "filtro.png", class: "foto_filtro", onclick: "toggleFiltroDiv()" %>
+
+            <div id="filtroDiv",  style="display: none;">
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1"></label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>Accion y Aventura</option>
+                        <option>Clasicos Universales</option>
+                        <option>Romance</option>
+                        <option>Academico</option>
+                        <option>Suspenso</option>
+                    </select>
+                <%= submit_tag "Buscar", class: "boton-libro", onclick: "redireccionar(event)" %>
+                </div>
+            </div>
+                </div>
+        
+
+        <div class="grid-container">
+            <div class="grid">
+                <% @libros.each do |libro| %>
+                    <div class="ficha">
+                        <a href="<%= libro_path(libro) %>">
+                            <%= image_tag libro.picture.url, class: "foto-mini"%>
+                        </a>
+                        <a href="<%= libro_path(libro) %>" class="librotitulo"><%= libro.titulo %></a><br>
+                        <%= link_to "Valor: $#{libro.precio}", libro, class: "precio" %>
+                        <div class="hide">COMPRAMEEEE!!!!</div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+<script>
+    function toggleFiltroDiv() {
+        const filtroDiv = document.getElementById("filtroDiv");
+        filtroDiv.style.display = filtroDiv.style.display === "none" ? "block" : "none";
+    }
+
+    function redireccionar(event) {
+        event.preventDefault();
+        const select = document.getElementById("exampleFormControlSelect1");
+        const opcionSeleccionada = select.value;
+        window.location.href = "/categoria/" + opcionSeleccionada;
+    }
+</script>
+
+</html> 

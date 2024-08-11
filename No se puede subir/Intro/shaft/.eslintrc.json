@@ -1,0 +1,37 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    // Alow to annotate _explicit_ `any`.
+    "@typescript-eslint/no-explicit-any": "off",
+    // Allow better control of how things are exported (useful when the only export doesn't need to be the default).
+    "import/prefer-default-export": "off",
+    // Warn about `console.log` statements that might be added in development.
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    // Allow `() => { ... }` when the return statement is not necessary (for consistency in components).
+    "arrow-body-style": "off",
+    // Allow usage of `return () => expression` when the returned type should be `() => void`.
+    "consistent-return": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+        "project": "tsconfig.json",
+        "extensions": [
+          ".ts",
+          "resolvers.ts"
+        ]
+      }
+    }
+  }
+}

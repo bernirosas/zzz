@@ -1,0 +1,105 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url("libros_fondo.jpg");
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: repeat;
+}
+
+.page-container {
+    position: relative;
+    min-height: 100%;
+}
+
+.content-wrap {
+    padding-bottom: 2.5rem;
+}
+
+#inicio {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 80px;
+    margin-bottom: 50px;
+    padding: 20px;
+    font-weight: 300;
+    height: auto;
+    width: 700px;
+    box-shadow: 10px 10px 30px black;
+    text-align: center;
+}
+
+p {
+    font-size: 20px;
+    font-weight: 300;
+    text-align: justify;
+}
+
+#inicio h1 {
+    font-size: 60px;
+}
+
+#imagen {
+    height: 450px;
+    width: auto;
+}
+
+.bloque {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 60px;
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: justify;
+    align-items: center;
+    margin-bottom: 50px;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 10px 10px 10px black;
+    height: auto;
+    width: 850px;
+    display: flex;
+    gap: 40px;
+}
+
+.perfil {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    box-shadow: 0px 4px 8px black;
+    object-fit: contain;
+}
+.libro-link {
+  color: rgb(255, 188, 188);
+  cursor: pointer;
+  background-color: #4d0000;
+  border-radius: 5px;
+  padding: 5px 15px;
+  box-shadow: 0px 2px 2px lightgray;
+  transition: ease background-color 250ms;
+  text-decoration: none;
+}
+
+
+.libro-link:hover{
+    background-color: #6e0000;
+    color: rgb(255, 188, 188);
+}
+
+
+.perfil:hover {
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

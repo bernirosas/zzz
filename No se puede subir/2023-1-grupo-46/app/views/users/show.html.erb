@@ -1,0 +1,54 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'devise' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+<%= render 'componentes/header' %>
+
+  <div class="contenedor">
+
+    <h1>Mi perfil</h1>
+    <%= image_tag current_user.picture.medium.url, class: 'foto-perfil'%>
+
+    <p><span>Email:</span> <%= @user.email %></p>
+    <p><span>Nombre:</span> <%= @user.nombre %></p>
+    <p><span>Teléfono:</span> <%= @user.telefono %></p>
+    <p><span>Tipo de usuario:</span>  
+      <% if @user.tipo_de_usuario == "C" %>
+        Cliente
+      <% elsif @user.tipo_de_usuario == "A" %>
+        Administrador
+      <% end %></p>
+    <p><span>Descripción:</span> <%= @user.descripcion %></p>
+    <!-- Add any other profile information you want to display here -->
+    <% if @user.tipo_de_usuario == "C" %>
+    <div class="contenedor-botones">
+    <button class="boton-usuario">
+    <%= link_to "Editar", edit_user_registration_path, class: "link" %>
+    </button>
+    <button class="boton-usuario">
+    <%= link_to "Volver", root_path, class: "link" %>
+    </button>
+    <button class="boton-usuario">
+    <%= link_to "Compras", user_compras_path(current_user.id), class: "link" %>
+    </button>
+    </div>
+    <% end %>
+    <% if @user.tipo_de_usuario == "A" %>
+      <button class="boton-usuario">
+      <%= link_to "Editar mi perfil", edit_user_registration_path, class: "link" %>
+      </button>
+    <% end %>
+
+  </div>
+  <div id="centrar-boton">
+  </div>
+</div>
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>

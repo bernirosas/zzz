@@ -1,0 +1,42 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'resena' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+
+<%= render 'componentes/header' %>
+
+  <div class="contenedor">
+
+    <h1>Reseñas para <%= @libro.titulo %></h1>
+
+    <% if user_signed_in? %>
+    <button class="boton-resena">
+    <%= link_to "Nueva resena", :new_libro_resena, class: "link" %>
+    </button>
+    <% else %>
+    <p>Inicia sesión para escribir una reseña</p>
+    <% end %>
+    <br/>
+
+    <% @resenas.each do |resena| %>
+      <div class="resena">
+        <h2><%= link_to resena.titulo, "/libros/#{@libro.id}/resenas/#{resena.id}", class: "link-resena" %></h2>
+        <p><%= resena.cuerpo %></p>
+      </div>
+    <% end %>
+    <button class="boton-resena">
+    <%= link_to "Volver", "/libros/#{@libro.id}", class: "link" %>
+    </button>
+
+  </div>
+
+</div>
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>

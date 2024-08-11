@@ -1,0 +1,41 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'chat' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+
+<%= render 'componentes/header' %>
+
+  <div class="contenedor">
+
+    <h1>Chat de mensajes para <%= @libro.titulo %></h1>
+
+    <% if user_signed_in? %>
+    <button class="boton-chat">
+    <%= link_to "Nuevo mensaje", :new_libro_mensaje, class: "link" %>
+    </button>
+    <% else %>
+    <p>Inicia sesión para escribir un mensaje</p>
+    <% end %>
+    <br/>
+
+    <% @mensajes.each do |mensaje| %>
+      <div class="mensaje">
+        <p><%= link_to mensaje.user.nombre, "/libros/#{@libro.id}/mensajes/#{mensaje.id}", class: "link-mensaje" %>: <%= mensaje.texto %></p>
+      </div>
+    <% end %>
+    <button class="boton-chat">
+    <%= link_to "Volver", "/libros/#{@libro.id}", class: "link" %>
+    </button>
+  
+  </div>
+
+</div>
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'chat' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+
+<%= render 'componentes/header' %>
+
+    <div class="contenedor">
+
+        <h1><%= @mensaje.user.nombre %>:</h1>
+        <p><span>Mensaje: </span><%= @mensaje.texto %></p>
+        <p><span>Fecha de creación:</span> <%= @mensaje.created_at.to_formatted_s(:long) %></p>
+        <p><span>Última actualización:</span> <%= @mensaje.updated_at.to_formatted_s(:long) %></p>
+
+        <% if @user == @mensaje.user %>
+        <button class="boton-chat">
+        <%=link_to "Editar", :edit_libro_mensaje, class: "link"%>
+        </button>
+        <% end %>
+
+        <% if user_signed_in? %>
+        <% if @user.tipo_de_usuario == "A" %>
+            <button class="boton-chat">
+            <%= link_to "Borrar", :libro_mensaje,
+                    data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                    }, class: "link" %>
+            </button>
+        <% end %>
+        <% end %>
+
+        <br/>
+
+        <button class="boton-chat">
+        <%=link_to "Volver", :libro_mensajes, class: "link"%>
+        </button>
+
+    </div>
+
+</div>
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+# Config for https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql
+schema:
+  - "scalar DateTime"
+  - "scalar JSON"
+  - "./src/modules/**/*.graphql"

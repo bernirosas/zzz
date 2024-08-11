@@ -1,0 +1,89 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background-image: url("libros_fondo.jpg");
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: lightblue;
+    background-position: center;
+}
+
+.page-container {
+    position: relative;
+    min-height: 100%;
+}
+
+.content-wrap {
+    padding-bottom: 2.5rem;
+}
+
+.contenedor {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 80px;
+    margin-bottom: 50px;
+    padding: 20px;
+    font-weight: 300;
+    height: auto;
+    width: 60%;
+    box-shadow: 0px 4px 8px black;
+    text-align: center;
+    align-items: center;
+}
+
+.boton-resena {
+    cursor: pointer;
+    background-color: #4d0000;
+    border-radius: 5px;
+    padding: 5px 15px;
+    box-shadow: 0px 2px 2px lightgray;
+    transition: ease background-color 250ms;
+    margin-bottom: 15px;
+}
+
+.boton-resena:hover {
+    background-color: #6e0000;
+}
+
+.boton-enviar {
+    color: rgb(255, 188, 188);
+    cursor: pointer;
+    background-color: #4d0000;
+    border-radius: 5px;
+    padding: 5px 15px;
+    box-shadow: 0px 2px 2px lightgray;
+    transition: ease background-color 250ms;
+    margin-bottom: 15px;
+}
+
+.boton-enviar:hover {
+    background-color: #6e0000;
+}
+
+.link {
+    text-decoration: none;
+    color: rgb(255, 188, 188);
+}
+
+.resena {
+    border: 1px solid black;
+    text-align: justify;
+    margin-bottom: 10px;
+    padding: 0px 5px;
+}
+
+.contenedor span {
+    font-weight: bold;
+}
+
+.link-resena {
+    color: black;
+    text-decoration: none;
+}

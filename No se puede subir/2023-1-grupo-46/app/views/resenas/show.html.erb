@@ -1,0 +1,49 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'resena' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+
+<%= render 'componentes/header' %>
+
+    <div class="contenedor">
+
+        <h1><%= @resena.titulo %></h1>
+        <p><span>Descripción: </span><%= @resena.cuerpo %></p>
+        <p><span>Autor de la reseña:</span> <%= @resena.user.nombre %></p>
+        <p><span>Fecha de creación:</span> <%= @resena.created_at.to_formatted_s(:long) %></p>
+        <p><span>Última actualización:</span> <%= @resena.updated_at.to_formatted_s(:long) %></p>
+        
+        <% if @user == @resena.user %>
+        <button class="boton-resena">
+        <%=link_to "Editar", :edit_libro_resena, class: "link"%>
+        </button>
+        <% end %>
+         <% if user_signed_in? %>
+        <% if @user.tipo_de_usuario == "A" %>
+            <button class="boton-resena">
+            <%= link_to "Borrar", :libro_resena,
+                    data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                    }, class: "link" %>
+            </button>
+            <% end %>
+        <% end %>
+
+        <br/>
+        <button class="boton-resena">
+        <%=link_to "Volver", :libro_resenas, class: "link"%>
+        </button>
+
+    </div>
+
+</div>
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,5 @@
+# Hide generated files in Git diff and GitHub PRs
+# https://docs.github.com/en/repositories/working-with-files/managing-files/customizing-how-changed-files-appear-on-github
+package-lock.json -diff linguist-generated
+graphql/generated/**/* -diff linguist-generated
+graphql/graphql.schema.json -diff linguist-generated

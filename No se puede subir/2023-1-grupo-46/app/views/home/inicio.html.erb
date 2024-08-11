@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>Hello world</title>
+    <%= stylesheet_link_tag 'home' %>
+
+</head>
+
+<div class="page-container">
+<div class ="content-wrap">
+<%= render 'componentes/header' %>
+
+<body>
+    <div class="bloque">
+    <%= image_tag "rai_chiquito.jpg", class: "perfil" %>
+    <div>
+      <h2>Raimundo Escalona</h2>
+      <p>
+        Hola, soy Raimundo Escalona, estoy en el major de Software y minor de data science. Me gusta harto 
+        programar y probablemente me dedique a eso en el futuro. Por mientras, lo que me gusta más es 
+        trabajar en el frontend. Pasen el mouse sobre la foto para ver el easter egg.
+      </p>  
+    </div>
+    </div>
+
+    <div class="bloque">
+    <div>
+      <h2>Lucía Fardella</h2>
+      <p>
+        Hola! Estoy en el major de computación y mi minor es geociencias (no me pregunten por qué). Además de la 
+        programación, me gusta mucho la astronomía y la física. Dato random: mi comida favorita es la italiana.
+      </p>  
+    </div>
+    <%= image_tag "Lucia.jpg", class: "perfil" %>
+    </div>
+
+    <div class="bloque">
+    <%= image_tag "berni.jpg", class: "perfil" %>
+    <div>
+      <h2>Berni Rosas</h2>
+      <p>
+        Holaaa, yo también estoy en el major de software y minor a por verse. Me gusta mucho ver películas,
+        leer, pasar tiempo con mi perro, viajar  y ver a mis amigos :)
+      </p>  
+    </div>
+    </div>
+
+</div>
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>

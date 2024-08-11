@@ -1,0 +1,26 @@
+# macOS
+*.DS_Store
+
+# data files
+*.log
+*.nc
+*.parquet
+*.xlsx
+*.zip
+
+# documents
+*.html
+*.pdf
+
+# personal
+.compiled_pipelines/
+.mypy_cache/
+.venv/
+.vscode/
+
+__pycache__/
+ruff_cache/
+shapefiles/
+
+.env
+hw-predictor.yaml

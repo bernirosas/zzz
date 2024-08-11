@@ -1,0 +1,44 @@
+name: Linterns
+
+on:
+  push:
+    branches:
+      - dev
+      - stg
+      - prd
+
+  pull_request:
+    branches:
+      - dev
+      - stg
+      - prd
+      - feat/*
+      - bugfix/*
+      - refactor/*
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: chartboost/ruff-action@v1
+
+  # TODO: uncomment this when mypy is checked on all platforms
+  # mypy:
+  #   name: Mypy
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: check out git repository
+  #       uses: actions/checkout@v2
+
+  #     - name: set up python
+  #       uses: actions/setup-python@v1
+  #       with:
+  #         python-version: 3.9
+
+  #     - name: install linter dependencies
+  #       run: pip install mypy pandas-stubs
+
+  #     - name: Mypy
+  #       run: mypy .

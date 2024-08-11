@@ -1,0 +1,148 @@
+{
+  "name": "shaft",
+  "version": "0.1.0",
+  "description": "A backend for handling coding courses information",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "nodemon src/index.ts",
+    "dev:win32": "nodemon -L src/index.ts",
+    "start": "ts-node src/index.ts",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "test": "(export DATABASE_URL=$TEST_DATABASE_URL; npm run migrate && ava)",
+    "prettier": "prettier --write \"src/**/*.ts\" \"!src/modules/**/generated.ts\" \"!src/modules/types.ts\"",
+    "watch-test": "ava --watch",
+    "migrate": "prisma migrate deploy",
+    "generate:graphql": "graphql-codegen",
+    "seed": "prisma db seed",
+    "postinstall": "prisma generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IIC1103/shaft.git"
+  },
+  "keywords": [
+    "education",
+    "classroom",
+    "backend"
+  ],
+  "author": "Nicolas Quiroz",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/IIC1103/shaft/issues"
+  },
+  "homepage": "https://github.com/IIC1103/shaft#readme",
+  "ava": {
+    "timeout": "5m",
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "serial": true
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.8",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-ava": "^13.2.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.15",
+    "prisma": "^5.0.0",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@ava/typescript": "^3.0.1",
+    "@aws-sdk/client-ses": "^3.441.0",
+    "@faker-js/faker": "^6.0.0-beta.0",
+    "@graphql-codegen/add": "^3.1.1",
+    "@graphql-codegen/cli": "^2.3.1",
+    "@graphql-codegen/graphql-modules-preset": "^2.3.2",
+    "@graphql-codegen/typescript": "^2.4.2",
+    "@graphql-codegen/typescript-resolvers": "^2.4.3",
+    "@graphql-tools/documents": "^1.0.0",
+    "@graphql-tools/load-files": "^6.5.3",
+    "@graphql-tools/merge": "^8.2.1",
+    "@graphql-tools/schema": "^8.3.1",
+    "@graphql-tools/utils": "^8.6.0",
+    "@paljs/plugins": "^4.0.13",
+    "@prisma/client": "^5.0.0",
+    "@tsconfig/node16": "^1.0.2",
+    "@types/showdown": "^2.0.3",
+    "apollo-server": "^3.6.1",
+    "apollo-server-core": "^3.11.1",
+    "apollo-server-errors": "^3.3.1",
+    "ava": "^4.0.0",
+    "axios": "^0.26.1",
+    "dotenv": "^16.0.0",
+    "dotenv-cli": "^5.0.0",
+    "dotenv-expand": "^8.0.1",
+    "google-auth-library": "^7.14.1",
+    "graphql": "^16.2.0",
+    "graphql-middleware": "^6.1.33",
+    "graphql-scalars": "^1.14.1",
+    "graphql-shield": "^7.6.5",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.0.5",
+    "prettier": "^2.8.3",
+    "require-glob": "^4.0.0",
+    "showdown": "^2.1.0",
+    "ts-node": "^10.4.0",
+    "tsconfig-paths": "^3.14.0"
+  },
+  "eslintConfig": {
+    "extends": "plugin:ava/recommended",
+    "env": {
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "ava"
+    ],
+    "rules": {
+      "ava/assertion-arguments": "error",
+      "ava/hooks-order": "error",
+      "ava/max-asserts": [
+        "off",
+        30
+      ],
+      "ava/no-async-fn-without-await": "error",
+      "ava/no-duplicate-modifiers": "error",
+      "ava/no-identical-title": "error",
+      "ava/no-ignored-test-files": "error",
+      "ava/no-import-test-files": "error",
+      "ava/no-incorrect-deep-equal": "error",
+      "ava/no-inline-assertions": "error",
+      "ava/no-nested-tests": "error",
+      "ava/no-only-test": "error",
+      "ava/no-skip-assert": "error",
+      "ava/no-skip-test": "error",
+      "ava/no-todo-implementation": "error",
+      "ava/no-todo-test": "warn",
+      "ava/no-unknown-modifiers": "error",
+      "ava/prefer-async-await": "error",
+      "ava/prefer-power-assert": "off",
+      "ava/prefer-t-regex": "error",
+      "ava/test-title": "error",
+      "ava/test-title-format": "off",
+      "ava/use-t": "error",
+      "ava/use-t-throws-async-well": "error",
+      "ava/use-t-well": "error",
+      "ava/use-test": "error",
+      "ava/use-true-false": "error"
+    }
+  }
+}

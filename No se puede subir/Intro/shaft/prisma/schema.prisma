@@ -1,0 +1,620 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../prisma/generated/client"
+  previewFeatures = ["views"]
+  // Binary targets are necessary when you are working with other OS
+  // like debian in our case, more info in the docs:
+  // https://www.prisma.io/docs/concepts/components/prisma-schema/generators#prisma-client-prisma-client-js
+  binaryTargets   = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Announcement {
+  // Announcement sent from users to any sections
+  // @sections: list of sections that should receive the announcement
+  // @author:  who sent the announcement
+  id          String                @id @default(cuid())
+  title       String
+  description String
+  sections    SectionAnnouncement[]
+  isDeleted   Boolean               @default(false)
+  author      User                  @relation(fields: [authorId], references: [id])
+  authorId    String
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @default(now()) @updatedAt
+  isUniversal Boolean               @default(true)
+  users       UserAnnouncement[]
+}
+
+model SectionAnnouncement {
+  // Announcement sent from users to any course section
+  // @section: which course section gonna receive the announcement
+  // @announcement:  which announcement is sent to the section
+  id             String       @id @default(cuid())
+  section        Section      @relation(fields: [sectionId], references: [id])
+  sectionId      String
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  announcementId String
+}
+
+model UserAnnouncement {
+  // Announcement sent from users to any course section
+  // @section: which course section gonna receive the announcement
+  // @announcement:  which announcement is sent to the section
+  id             String       @id @default(cuid())
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  announcement   Announcement @relation(fields: [announcementId], references: [id])
+  announcementId String
+  isRead         Boolean      @default(false)
+
+  @@unique([userId, announcementId])
+}
+
+
+
+model Course {
+  // Course from the university
+  // @name:          Course name
+  // @description:   Course description
+  // @isActive:      If the course is active
+  // @semesters:     Semesters in which the course was taught
+  // @evaluations:   Evaluations that belong to the course
+  // @metaQuestions: MetaQuestions that belong to the course
+  id            String         @id @default(cuid())
+  name          String
+  description   String
+  isActive      Boolean        @default(true)
+  isDeleted     Boolean        @default(false)
+  semesters     Semester[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  evaluations   Evaluation[]
+  metaQuestions MetaQuestion[]
+}
+
+model Evaluation {
+  // Evaluations for course students
+  // @evaluation:  type of evaluation (Quiz, Homework, Evaluation, Activity, Compilation)
+  // @extraDays:   number of extra days to submit the evaluation (Homework)
+  // @penalty:     discounted points for each day of delay (Homework)
+  // @optional:    if the evaluation is optional
+  // @time:        time in seconds to submit the test once is open (Quiz)
+  // @sections:    course sections that should do the evaluation
+  // @questions:   which questions should be answered
+  // @submissions: attempts submitted by students
+  // @studentsExtraDaysRequests:  students requests for extra days in this evaluation
+  // @points:      total points a student can earn in this evaluation
+  id                        String              @id @default(cuid())
+  title                     String
+  description               String
+  evaluation                EvaluationType      @default(Evaluation)
+  maxExtraDays              Int                 @default(0)
+  penalty                   Int                 @default(0)
+  isDeleted                 Boolean             @default(false)
+  optional                  Boolean
+  sections                  SectionEvaluation[]
+  createdAt                 DateTime            @default(now())
+  updatedAt                 DateTime            @default(now()) @updatedAt
+  questions                 Question[]
+  course                    Course              @relation(fields: [courseId], references: [id])
+  courseId                  String
+  isUniversal               Boolean             @default(true)
+  studentsExtraDaysRequests ExtraDaysRequest[]
+  points                    Int                 @default(0)
+}
+
+model QuestionConfiguration {
+  // Question Configuration like execution time limit, allowed builtins or file permissions
+  // @modulesMode:        modules restriction mode [none, blacklist, whitelist]
+  // @builtinsMode:       builtins restriction mode [none, blacklist, whitelist]
+  // @filesMode:          files restriction mode [none, blacklist, whitelist]
+  // @modules:            array of modules to which restrictions will be applied
+  // @builtins:           array of builtins to which restrictions will be applied
+  // @files:              array of files to which restrictions will be applied
+  // @executionTimeLimit: execution time limit
+  // @testGroupSize:      number of tests to be executed in a single execution
+  id                 String          @id @default(cuid())
+  question           Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId         String          @unique
+  modulesMode        RestrictionType @default(none)
+  builtinsMode       RestrictionType @default(none)
+  filesMode          RestrictionType @default(none)
+  modules            String[]
+  builtins           String[]
+  files              String[]
+  executionTimeLimit Int             @default(10)
+  testGroupSize      Int             @default(1)
+}
+
+model MetaQuestionConfiguration {
+  // Question Configuration (for a MetaQuestion) like execution time limit, allowed builtins or file permissions
+  // @modulesMode:        modules restriction mode [none, blacklist, whitelist]
+  // @builtinsMode:       builtins restriction mode [none, blacklist, whitelist]
+  // @filesMode:          files restriction mode [none, blacklist, whitelist]
+  // @modules:            array of modules to which restrictions will be applied
+  // @builtins:           array of builtins to which restrictions will be applied
+  // @files:              array of files to which restrictions will be applied
+  // @executionTimeLimit: execution time limit
+  // @testGroupSize:      number of tests to be executed in a single execution
+  id                 String          @id @default(cuid())
+  metaQuestion       MetaQuestion    @relation(fields: [metaQuestionId], references: [id], onDelete: Cascade)
+  metaQuestionId     String          @unique
+  modulesMode        RestrictionType @default(none)
+  builtinsMode       RestrictionType @default(none)
+  filesMode          RestrictionType @default(none)
+  modules            String[]
+  builtins           String[]
+  files              String[]
+  executionTimeLimit Int             @default(10)
+  testGroupSize      Int             @default(1)
+}
+
+model MetaQuestion {
+  // MetaQuestions are questions that exist globally and are copied when added to a particular evaluation
+  // @testCases:     tests to evaluate the student code
+  // @points:         points a student can get for solving the question
+  // @code:           Initial code to solve the problem
+  // @evaluation:     Which evaluation does the question belong to
+  // @studentsStates: Students progress state
+  // @course:         Course of the question
+  id                  String                     @id @default(cuid())
+  title               String
+  description         String
+  code                Json
+  metaConfiguration   MetaQuestionConfiguration?
+  metaTestCases       MetaTestCase[]
+  programmingLanguage ProgrammingLanguage
+  course              Course                     @relation(fields: [courseId], references: [id])
+  courseId            String
+  isDeleted           Boolean                    @default(false)
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @default(now()) @updatedAt
+  points              Int                        @default(0)
+  questions           Question[]
+}
+
+model Question {
+  // Question are part of an evaluation
+  // @code:           initial code to solve the problem
+  // @evaluation:     which evaluation does the question belong to
+  // @testCases:     tests to evaluate the student code
+  // @studentsStates: students progress state
+  // @points:         points a student can get for solving the question
+  id                  String                      @id @default(cuid())
+  title               String
+  description         String
+  code                Json
+  position            Int?
+  configuration       QuestionConfiguration?
+  programmingLanguage ProgrammingLanguage
+  isDeleted           Boolean                     @default(false)
+  evaluation          Evaluation                  @relation(fields: [evaluationId], references: [id])
+  evaluationId        String
+  createdAt           DateTime                    @default(now())
+  updatedAt           DateTime                    @default(now()) @updatedAt
+  testCases           TestCase[]
+  studentsStates      StudentQuestionState[]
+  submissions         StudentQuestionSubmission[]
+  points              Int                         @default(0)
+  metaQuestion        MetaQuestion?               @relation(fields: [metaQuestionId], references: [id])
+  metaQuestionId      String?
+}
+
+model Section {
+  // Course section in a specific semester. Can have any type
+  // of users like teachers, students or teaching assintants
+  // @semester:      semester to which the section belongs
+  // @participants:  users who belong to the section
+  // @announcements: announcements sent to the section
+  // @evaluations:   evaluations assigned to the section
+  id                         String                       @id @default(cuid())
+  isActive                   Boolean                      @default(true)
+  number                     Int
+  name                       String
+  semester                   Semester                     @relation(fields: [semesterId], references: [id])
+  semesterId                 String
+  isDeleted                  Boolean                      @default(false)
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now()) @updatedAt
+  participants               UsersOnSection[]
+  announcements              SectionAnnouncement[]
+  evaluations                SectionEvaluation[]
+  studentsSectionInformation StudentsSectionInformation[]
+  SemesterParticipant        SemesterParticipant[]
+
+  @@unique([number, semesterId])
+  @@unique([name, semesterId])
+}
+
+model SectionEvaluation {
+  // Relation between Sections and Evaluations
+  // @secretCode: code to open the evaluation
+  // @startsIn:   datetime the evaluation begins
+  // @time:       time in seconds to submit the test once is open (Quiz)
+  // @endsIn:     datetime the evaluation ends
+  // @section:    which course section gonna do the evaluation
+  // @evaluation: which evaluation correspond to the section
+  id                      String                   @id @default(cuid())
+  secretCode              String
+  startsIn                DateTime
+  endsIn                  DateTime
+  section                 Section                  @relation(fields: [sectionId], references: [id])
+  sectionId               String
+  evaluation              Evaluation               @relation(fields: [evaluationId], references: [id])
+  evaluationId            String
+  time                    Int?                     @default(0)
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @default(now()) @updatedAt
+  studentEvaluationStates StudentEvaluationState[]
+  published               Boolean                  @default(false)
+  isArchived              Boolean                  @default(false)
+  isDeleted               Boolean                  @default(false)
+
+  @@unique([sectionId, evaluationId])
+}
+
+model Semester {
+  // Semester of a specific course. Can have many sections.
+  // @course:            Course to which it belongs
+  // @sections:          Sections of students for this semester
+  // @semester:          Semester type between [FIRST, SECOND, SUMMER]
+  // @year:              Year in which the semester is ocurring
+  // @studentsExtraDays: Initial number of extraDays for students
+  id                  String                @id @default(cuid())
+  course              Course                @relation(fields: [courseId], references: [id])
+  courseId            String
+  sections            Section[]
+  isActive            Boolean               @default(true)
+  isDeleted           Boolean               @default(false)
+  semester            SemesterType
+  year                Int
+  studentsExtraDays   Int                   @default(0)
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @default(now()) @updatedAt
+  usersOnSemester     UsersOnSemester[]
+  SemesterParticipant SemesterParticipant[]
+
+  @@unique([year, semester, courseId])
+}
+
+model StudentQuestionState {
+  // State saved when students make changes in the code editor.
+  // @ip:       ip address of the student who make the change
+  // @state:    student code after the changes
+  // @changesHistory:  history of file changes
+  // @student:  who make the changes
+  // @question: which question the code belongs
+  id                         String                      @id @default(cuid())
+  ip                         String
+  state                      Json
+  changesHistory             Json
+  student                    User                        @relation(fields: [studentId], references: [id])
+  studentId                  String
+  studentEvaluationState     StudentEvaluationState      @relation(fields: [studentEvaluationStateId], references: [id], onDelete: Cascade)
+  studentEvaluationStateId   String
+  question                   Question                    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId                 String
+  savedAt                    DateTime                    @default(now())
+  updatedAt                  DateTime                    @default(now()) @updatedAt
+  isDeleted                  Boolean                     @default(false)
+  studentQuestionSubmissions StudentQuestionSubmission[]
+
+  @@unique([studentId, questionId])
+}
+
+model StudentQuestionSubmission {
+  // Evaluation submissions made by students
+  // @student:     student who submitted the answers
+  // @question:    question to which it is directed
+  // @code:        code of submitted question
+  // @submittedAt: datetime of the submitted question
+  id                     String               @id @default(cuid())
+  student                User                 @relation(fields: [studentId], references: [id])
+  studentId              String
+  question               Question             @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId             String
+  submittedAt            DateTime             @default(now())
+  updatedAt              DateTime             @default(now()) @updatedAt
+  code                   Json
+  results                TestCaseResult[]
+  studentQuestionState   StudentQuestionState @relation(fields: [studentQuestionStateId], references: [id], onDelete: Cascade)
+  studentQuestionStateId String
+
+  @@index([studentId], type: Hash)
+}
+
+model StudentEvaluationState {
+  id                    String                  @id @default(cuid())
+  student               User                    @relation(fields: [studentId], references: [id])
+  studentId             String
+  sectionEvaluation     SectionEvaluation       @relation(fields: [sectionEvaluationId], references: [id])
+  sectionEvaluationId   String
+  startedAt             DateTime                @default(now())
+  submittedAt           DateTime?
+  updatedAt             DateTime                @default(now()) @updatedAt
+  status                StudentEvaluationStatus
+  studentQuestionStates StudentQuestionState[]
+
+  @@unique([studentId, sectionEvaluationId])
+}
+
+model TestCase {
+  // A set of input and output, exit code, timeout and all the necesary restrictions, of a single run of code of a student, vs the problem.
+  // @number:         test number
+  // @input:          code to test the question
+  // @expectedOutput: text to test the result
+  // @isPublic:       if the input and output should be exposed
+  // @question:       which question the test case belongs
+  // @points:         number of points assigned to the testcase
+  id             String           @id @default(cuid())
+  number         Int
+  input          Json
+  expectedOutput String
+  isPublic       Boolean
+  question       Question         @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId     String
+  isDeleted      Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @default(now()) @updatedAt
+  results        TestCaseResult[]
+  points         Int              @default(0)
+}
+
+model TestCaseResult {
+  // Result of test cases in a question submission
+  // @result: if the submission pass the test
+  // @time:   time taken to run the submission in Sandpit
+  // @output: text of running the submission
+  // @points: points of running the submission
+  id                  String                    @id @default(cuid())
+  studentSubmission   StudentQuestionSubmission @relation(fields: [studentSubmissionId], references: [id])
+  studentSubmissionId String
+  testCase            TestCase                  @relation(fields: [testCaseId], references: [id], onDelete: Cascade)
+  testCaseId          String
+  veredict            TestVeredict
+  sandpitOutput       Json
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @default(now())
+  points              Int                       @default(0)
+
+  @@index([studentSubmissionId], type: Hash)
+}
+
+model User {
+  // Users of the plataform
+  // @sections:       which sections does the user belong to
+  // @announcements:  announcements sent by the user
+  // @submissions:    evluations submitted by the user
+  // @questionStates: changes made in the user evaluations
+  id                         String                       @id @default(cuid())
+  name                       String
+  email                      String                       @unique
+  imageUrl                   String                       @default("")
+  isSuperAdmin               Boolean                      @default(false)
+  isActive                   Boolean                      @default(true)
+  isDeleted                  Boolean                      @default(false)
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now()) @updatedAt
+  enrollments                UsersOnSection[]
+  announcements              Announcement[]
+  submissions                StudentQuestionSubmission[]
+  questionsStates            StudentQuestionState[]
+  studentsSectionInformation StudentsSectionInformation[]
+  usersOnSemester            UsersOnSemester[]
+  evaluationStates           StudentEvaluationState[]
+  userFeedback               UserFeedback[]
+  userFeedbackVotes          UserFeedbackVotes[]
+  SemesterParticipant        SemesterParticipant[]
+  userAnnouncements          UserAnnouncement[]
+}
+
+model UserFeedback {
+  // Feedback from users to improve the app
+  // @id: Unique identifier
+  // @category: Category of the feedback
+  // @title: Title of the feedback
+  // @description: Details of the feedback
+  // @status: Current status of the feedback entry
+  // @author: User who created the feedback
+  // @userFeedbackVotes: List of votes for the feedback
+  id                String               @id @default(cuid())
+  category          UserFeedbackCategory
+  title             String
+  description       String
+  status            UserFeedbackStatus   @default(NoStatus)
+  author            User                 @relation(fields: [authorId], references: [id])
+  authorId          String
+  userFeedbackVotes UserFeedbackVotes[]
+  isSecret          Boolean              @default(false)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @default(now()) @updatedAt
+}
+
+model UserFeedbackVotes {
+  // Feedback votes
+  // @id: Unique identifier
+  // @userFeedback: Feedback which is receiving a vote
+  // @user: User who voted for the feedback
+  id             String       @id @default(cuid())
+  userFeedback   UserFeedback @relation(fields: [userFeedbackId], references: [id])
+  userFeedbackId String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+
+  @@unique([userFeedbackId, userId])
+}
+
+model UsersOnSection {
+  // User roles on sections
+  // @role:    The role of the user in the section
+  // @section: Section in which the user is in
+  // @user:    User who belongs to the course section
+  id        String   @id @default(cuid())
+  role      UserRole
+  section   Section  @relation(fields: [sectionId], references: [id])
+  sectionId String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([sectionId, userId])
+}
+
+model UsersOnSemester {
+  // User roles on semesters
+  // @role:     The role of the user in the semester
+  // @semester: Semester in which the user is in
+  // @user:     User who belongs to the course Semester
+  id         String   @id @default(cuid())
+  role       UserRole
+  semester   Semester @relation(fields: [semesterId], references: [id])
+  semesterId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@unique([semesterId, userId])
+}
+
+model StudentsSectionInformation {
+  // Information of the students who are enrolled in the section
+  // @grade:     Score of the student
+  // @section:   Section in which the user is in
+  // @student:      Student who belongs to the course section
+  // @extraDaysRequests: student's extra days requests
+  id                String             @id @default(cuid())
+  grade             Float              @default(0)
+  section           Section            @relation(fields: [sectionId], references: [id])
+  sectionId         String
+  student           User               @relation(fields: [studentId], references: [id])
+  studentId         String
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @default(now()) @updatedAt
+  extraDaysRequests ExtraDaysRequest[]
+
+  @@unique([sectionId, studentId])
+}
+
+model ExtraDaysRequest {
+  // Record of extra days requests. One request per extra day.
+  // @studentsSectionInformation: Student section information
+  // @evaluation: Evaluation where the student requested extra days
+  id                           String                     @id @default(cuid())
+  studentsSectionInformation   StudentsSectionInformation @relation(fields: [studentsSectionInformationId], references: [id])
+  studentsSectionInformationId String
+  evaluation                   Evaluation                 @relation(fields: [evaluationId], references: [id])
+  evaluationId                 String
+  createdAt                    DateTime                   @default(now())
+}
+
+model MetaTestCase {
+  // A set of input and output, exit code, timeout and all the necesary restrictions, of a single run of code of a student, vs the problem.
+  // @number:         test number
+  // @input:          code to test the question
+  // @expectedOutput: text to test the result
+  // @isPublic:       if the input and output should be exposed
+  // @question:       which question the test case belongs
+  id             String       @id @default(cuid())
+  number         Int
+  input          Json
+  expectedOutput String
+  isPublic       Boolean
+  metaQuestion   MetaQuestion @relation(fields: [metaQuestionId], references: [id])
+  metaQuestionId String
+  isDeleted      Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now()) @updatedAt
+  points         Int          @default(0)
+}
+
+view SemesterParticipant {
+  // View to get the participants of a semester
+  // @semesterId: Id of the semester
+  // @userId: Id of the user
+  // @role: Role of the user in the semester
+  id         String    @id
+  section    Section?  @relation(fields: [sectionId], references: [id])
+  sectionId  String?
+  semester   Semester? @relation(fields: [semesterId], references: [id])
+  semesterId String?
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  role       UserRole
+}
+
+enum RestrictionType {
+  blacklist
+  whitelist
+  none
+}
+
+enum EvaluationType {
+  Quiz
+  Evaluation
+  Homework
+  Activity
+  Compilation
+}
+
+enum ProgrammingLanguage {
+  Python
+}
+
+enum SemesterType {
+  FIRST
+  SECOND
+  SUMMER
+}
+
+enum TestVeredict {
+  Accepted
+  WrongAnswer
+  RuntimeError
+  TimeLimitExceeded
+  MemoryLimitExceeded
+  ServerError
+}
+
+enum UserFeedbackCategory {
+  Bug
+  Improvement
+  Styling
+  NewFeature
+}
+
+enum UserFeedbackStatus {
+  NoStatus
+  UnderConsideration
+  Planned
+  InProgress
+  Shipped
+}
+
+enum UserRole {
+  Teacher
+  TeacherAssistant
+  ContentCreator
+  Student
+  Coordinator
+}
+
+enum StudentEvaluationStatus {
+  Available
+  AvailableWithCode
+  Submitted
+  InProgress
+  NotAvailable
+  NotDelivered
+}

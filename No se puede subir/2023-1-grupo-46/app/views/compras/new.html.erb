@@ -1,0 +1,34 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'compra' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+
+<%= render 'componentes/header' %>
+
+  <div class="contenedor">
+
+    <h1>Nueva compra</h1>
+
+    <%= form_for([@libro, @compra]) do |form| %>
+      <%= form.hidden_field :libro_id, value: @libro.id %>
+      <p>Libro: <span><%= @libro.titulo %></span></p>
+      <p>Precio: <span><%= @libro.precio %></span></p>
+      <%= form.submit "Confirmar compra", class:"boton-confirmar"%>
+    <% end %>
+    <br>
+    <button class="boton-compra">
+    <%= link_to "Volver", :back, class: "link" %>
+    </button>
+
+  </div>
+
+</div>
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>

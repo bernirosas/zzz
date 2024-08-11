@@ -1,0 +1,26 @@
+<html>
+<head>
+    <%= stylesheet_link_tag 'home' %>
+</head>
+
+<body>
+<div class="page-container">
+<div class ="content-wrap">
+<%= render 'componentes/header' %>
+
+  <div id="inicio">
+    
+    <h1>Once Upon a Book</h1>
+    <%=image_tag "portada.jpg", id: "imagen" %>
+    <br>
+    <br>
+    <%= link_to "Ir a libros", :libros, class:"libro-link" %>
+    </div>
+
+  </div>
+  
+<%= render 'componentes/footer' %>
+</div>
+</body>
+
+</html>
